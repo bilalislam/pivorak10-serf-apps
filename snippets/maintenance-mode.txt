@@ -1,0 +1,32 @@
+# ft=bash
+# serf/member-join.sh
+
+#!/bin/bash
+while read line; do
+  ROLE=`echo $line | awk '{print \$3 }'`
+  if [ "${ROLE}" == "db" ]; then
+     rm /usr/share/nginx/html/maintenance.txt 2> /dev/null
+  fi
+done
+
+#serf/member-leave.sh
+
+#!/bin/bash
+while read line; do
+  ROLE=`echo $line | awk '{print \$3 }'`
+  if [ "\${ROLE}" == "db" ]; then
+    touch /usr/share/nginx/html/maintenance.txt
+  fi
+done
+
+#/nginx/default.conf
+
+server {
+  ...
+  location / {
+    if (-f \$document_root/maintenance.txt) { return 503; }
+  }
+  error_page 503 @maintenance;
+  
+  location @maintenance { rewrite ^(.*)$ /maintenance.html break; }
+}

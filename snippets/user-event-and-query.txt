@@ -1,0 +1,15 @@
+# ft=ruby
+## /etc/serf/handler.rb
+...
+ENV['SERF_EVENT_PAYLOAD'] = gets.to_s.chomp
+
+case ENV['SERF_EVENT']
+when 'user'
+  # e.g. serf event deploy "{\"version\":\"23424\", \"branch\":\"master\"}"
+  if ENV['SERF_USER_EVENT'] == 'deploy'
+    data = JSON.parse(EVENT['SERF_EVENT_PAYLOAD'])
+    puts "deploys #{data['version']} from #{data['branch']}"
+  end
+when 'query'
+  puts `date` if ENV['SERF_QUERY_NAME'] == 'date'
+end

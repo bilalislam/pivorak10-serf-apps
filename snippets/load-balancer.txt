@@ -1,0 +1,46 @@
+# ft=ruby
+#provision-lb.sh
+
+#/etc/serf/default.conf.erb
+upstream app {
+  <% ENV['SERF_APP_IPS'].split(',').each do |ip| %>
+   server <%= ip %>:80;
+  <% end %>
+}
+
+server {
+  ...
+  location / {
+    if (-f $document_root/failure.txt) { return 502; }
+    
+    try_files $uri @app;
+  }
+
+  location @app { proxy_pass http://app; }
+
+  error_page 502 @failure;
+
+  location @failure { rewrite ^(.*)$ /failure.html break; }
+}
+
+## /etc/serf/handler.rb
+
+ENV['SERF_EVENT_PAYLOAD'] = gets.chomp
+ENV['SERF_MEMBER_NAME], ENV['SERF_MEMBER_IP],
+  ENV['SERF_MEMBER_ROLE], ENV['SERF_MEMBER_TAGS] = 
+                                  ENV['SERF_EVENT_PAYLOAD'].split(' ')
+
+case ENV['SERF_EVENT']
+when 'member-join'
+  if ENV['SERF_MEMBER_ROLE'] == 'app'
+    # store new ip to local app database and
+    # remove filure.txt from app root directory
+  end
+when 'member-failed', 'member-leave'
+  if ENV['SERF_MEMBER_ROLE'] == 'app'
+    # remove ip from local app database and
+    # if database is empty, then write failure.txt into root directory
+    # else generete nginx upstream config based on
+    #      app database data via ERB template
+  end
+end
