@@ -1,5 +1,9 @@
 # This repo includes Serf in action demo suite.
 
+[![Building smart clusters with HashiCorp Serf and Consul by Andrey Kryachkov & Roman V. Babenko](https://img.youtube.com/vi/bMIKo7rMqHI/0.jpg)](https://www.youtube.com/watch?v=bMIKo7rMqHI)
+
+[Click to watch on Youtube](https://www.youtube.com/watch?v=bMIKo7rMqHI)
+
 ## DB maintenance demo
 
 [db-maintenance-demo](https://github.com/romanvbabenko/pivorak10-serf-apps/tree/master/db-maintenance-demo) folder
@@ -24,7 +28,7 @@ Serf custom events and queries demo
 
 ## User query demo
 
-![user-query-demo](https://github.com/romanvbabenko/pivorak10-serf-apps/tree/master/user-query-demo) folder
+[user-query-demo](https://github.com/romanvbabenko/pivorak10-serf-apps/tree/master/user-query-demo) folder
 includes Vagrant config to run Serf's custom events and queries demo.
 
 Start Vagrant nodes:
